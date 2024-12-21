@@ -63,8 +63,8 @@ export const LogoutButton = () => {
           Please wait
         </Button>
       ) : (
-        <Button variant="outline" className="">
-          Logout
+        <Button variant="outline" className="transition-all">
+          Sign out
         </Button>
       )}
     </>

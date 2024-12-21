@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { auth, signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import AuthModal from "./AuthModal";
-import { LogoutButton } from "./AuthButtons";
+import Avatar from "./Avatar";
+import { Badge } from "../ui/badge";
 
 export const Navbar = async () => {
   const user = await auth();
@@ -19,15 +20,12 @@ export const Navbar = async () => {
 
       <div>
         {user ? (
-          <form
-            action={async () => {
-              "use server";
-
-              await signOut();
-            }}
-          >
-            <LogoutButton />
-          </form>
+          <div className="flex items-center gap-4">
+            <Badge variant="outline" className="">
+              1 credit left
+            </Badge>
+            <Avatar user={user} />
+          </div>
         ) : (
           <div className="flex items-center gap-2">
             <AuthModal />
