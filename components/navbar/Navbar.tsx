@@ -16,10 +16,8 @@ export const Navbar: React.FC<NavbarProps> = async ({
 }) => {
   const user = await auth();
 
-  console.log(user);
-
   return (
-    <div className="border-b px-[15%] h-16 flex items-center justify-between">
+    <div className="border-b px-5 md:px-[10%] lg:px-[15%] h-16 flex items-center justify-between sticky top-0 transition-all">
       <div className="">
         <Link href="/" className="font-bold text-2xl">
           NAILR
