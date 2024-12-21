@@ -13,3 +13,29 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model User {
+  id               String   @id @default(cuid())
+  kindeUserId      String   @unique
+  email            String   @unique
+  name             String?
+  image            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  credits          Int      @default(1)
+  stripeCustomerId String?  @unique
+
+  posts Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy   User   @relation(fields: [createdById], references: [id])
+  createdById String // Foreign key linking to User's ID
+
+  @@index([name]) // Index for optimizing queries on the "name" field
+}
