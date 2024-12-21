@@ -15,7 +15,7 @@ import Avvvatars from "avvvatars-react";
 import { IoLogOutOutline } from "react-icons/io5";
 import { MdAttachMoney } from "react-icons/md";
 import { FiShoppingCart } from "react-icons/fi";
-import { signOut } from "@/lib/auth";
+import { signOut } from "next-auth/react";
 
 interface AvatarProps {
   user?: any;
