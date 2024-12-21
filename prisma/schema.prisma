@@ -14,18 +14,41 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id               String   @id @default(cuid())
-  kindeUserId      String   @unique
-  email            String   @unique
-  name             String?
-  image            String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  credits          Int      @default(1)
-  stripeCustomerId String?  @unique
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  access_token      String? // @db.Text
+  refresh_token     String? // @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? // @db.Text
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  posts Post[]
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id       String    @id @default(cuid())
+  name     String?
+  email    String?   @unique
+  image    String?
+  accounts Account[]
+  sessions Session[]
+  posts    Post[]
+
+  credits Int @default(1)
 }
 
 model Post {
@@ -35,7 +58,7 @@ model Post {
   updatedAt DateTime @updatedAt
 
   createdBy   User   @relation(fields: [createdById], references: [id])
-  createdById String // Foreign key linking to User's ID
+  createdById String
 
-  @@index([name]) // Index for optimizing queries on the "name" field
+  @@index([name])
 }
